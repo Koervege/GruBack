@@ -5,7 +5,6 @@ const { auth } = require('../utils/auth')
 router.route('/').get(list);
 router.route('/signup').post(signup);
 router.route('/signin').post(signin);
-router.route('/show').get(auth,show);
 router.route('/').put(auth, update);
 router.route('/').delete(auth, destroy);
 
