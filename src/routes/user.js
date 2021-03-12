@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { create, list, show, update, destroy } = require('../controllers/user.controller');
+const { signup, list, show, update, destroy } = require('../controllers/user.controller');
 
-router.route('/').post(create);
+router.route('/signup').post(signup);
 router.route('/').get(list);
 router.route('/:userId').get(show);
 router.route('/:userId').put(update);
