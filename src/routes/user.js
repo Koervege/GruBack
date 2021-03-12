@@ -1,10 +1,12 @@
 const router = require('express').Router();
-const { signup, list, show, update, destroy } = require('../controllers/user.controller');
+const { signup, signin, list, show, update, destroy } = require('../controllers/user.controller');
+const { auth } = require('../utils/auth')
 
-router.route('/signup').post(signup);
 router.route('/').get(list);
-router.route('/:userId').get(show);
-router.route('/:userId').put(update);
-router.route('/:userId').delete(destroy);
+router.route('/signup').post(signup);
+router.route('/signin').post(signin);
+router.route('/show').get(auth,show);
+router.route('/').put(auth, update);
+router.route('/').delete(auth, destroy);
 
 module.exports = router;

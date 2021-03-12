@@ -14,6 +14,11 @@ app.use(morgan('dev'));
 
 app.use('/users', userRouter);
 
+app.get('/', auth, (req, res) => {
+  const { user } = req;
+  res.send(`authenticated ${user}`);
+});
+
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
 });
