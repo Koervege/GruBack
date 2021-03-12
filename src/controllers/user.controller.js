@@ -44,8 +44,8 @@ module.exports = {
     try {
       const { user } = req;
 
-      const user = await User.findById(user).select('-password');
-      res.status(200).json({ message: 'user found', user });
+      const userShow = await User.findById(user).select('-password');
+      res.status(200).json({ message: 'user found', userShow });
     } catch (error) {
       res.status(400).json({ message: 'user could not be found', error });
     }
