@@ -19,7 +19,6 @@ const towSchema = new Schema({
         },
         message: 'tow plate number already exists'
       }
-
     ] 
   },
   status: Boolean,
@@ -36,7 +35,7 @@ const towSchema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
   }
 
-},  {
+}, {
   timestamps: true,
 });
 

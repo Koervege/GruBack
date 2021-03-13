@@ -41,17 +41,5 @@ module.exports = {
     } catch(error) {
       res.status(404).json({ message: 'ow not updated', tow});  
     }
-  }
-  // update(req, res) {
-
-  //   Tow
-  //     .findByIdAndUpdate( towId, body, { new:true })
-  //     .then(tow => {
-  //       res.status(200).json({ message: 'tow was updated', tow })
-  //     })
-  //     .catch(error => {
-  //       res.status(404).json({ message: 'tow not updated'})
-  //     })
-  // }
-
+  },
 }
