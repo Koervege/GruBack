@@ -3,7 +3,10 @@ function connect() {
   mongoose.connect('mongodb://127.0.0.1:27017/gruappdb', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    
   });
+
+  mongoose.set('useFindAndModify', false);
 
   mongoose.connection.once('open', () => {
     console.log('Connection established successfully');
