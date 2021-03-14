@@ -6,8 +6,6 @@ function connect() {
     
   });
 
-  mongoose.set('useFindAndModify', false);
-
   mongoose.connection.once('open', () => {
     console.log('Connection established successfully');
   });
