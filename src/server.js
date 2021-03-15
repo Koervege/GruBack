@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const { connect } = require('./db');
 const userRouter = require('./routes/user');
+const motorcycleRouter = require('./routes/motorcycle');
 const { auth } = require('./utils/auth');
 
 const port = 8000;
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/users', userRouter);
+app.use('/motorcycles', motorcycleRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
