@@ -50,20 +50,21 @@ module.exports = {
       res.status(400).json({ message: 'suppliers could not be found', error });
     }
   },
-  async update(req, res) {
+  async update(req, res, next) {
     try {
       const {
         body,
-        supplier,
+        params: { supplierID },
       } = req;
 
-      const supplierUpdate = await Supplier.findByIdAndUpdate(supplier, body, {
+      const supplierUpdate = await Supplier.findByIdAndUpdate(supplierID, body, {
         new: true,
       }).select('-password');
       res.status(200).json({ message: 'supplier updated', supplierUpdate });
     } catch (error) {
       res.status(400).json({ message: 'supplier could not be updated', error });
     }
+    // res.json('estoy funcionando')
   },
   async destroy(req, res) {
     try {
