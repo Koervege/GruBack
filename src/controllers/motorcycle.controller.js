@@ -6,8 +6,7 @@ module.exports = {
   async create(req,res) {
     try {
       const { body, user } = req;
-      const userId = user;
-      const newBike = await Motorcycle.create({...body, userId});
+      const newBike = await Motorcycle.create({...body, user});
       const fullUser = await User.findById(user);
 
       fullUser.bikeIDs.push(newBike._id);
@@ -35,10 +34,9 @@ module.exports = {
     try {
       const { body, user } = req;
       const bikeId = body.bikeId;
-      const fullUser = await User.findById(user);
-      const userBikes = fullUser.bikeIDs;
+      const bike = await Motorcycle.findById(bikeId);
 
-      if( userBikes.indexOf(bikeId.toString()) >= 0 ) {
+      if (bike.userId.toString() === user.toString()) {
         const motorcycleUpdate = await Motorcycle.findByIdAndUpdate(bikeId, body, {
           new: true,
         });
@@ -57,9 +55,9 @@ module.exports = {
       const { body, user } = req;
       const bikeId = body.bikeId;
       const fullUser = await User.findById(user);
-      const userBikes = fullUser.bikeIDs;
+      const bike = await Motorcycle.findById(bikeId);
 
-      if( userBikes.indexOf( bikeId.toString()) >= 0 ) {
+      if (bike.userId.toString() === user.toString()) {
 
         fullUser.bikeIDs.pull(bikeId);
         fullUser.save({ validateBeforeSave: false });
@@ -68,7 +66,7 @@ module.exports = {
 
         res.status(200).json({ message: 'Bike deleted', deletedMotorcycle });
       } else {
-      throw 'Bike not owned'
+        throw 'Bike not owned'
       }
       
     } catch (error) {
