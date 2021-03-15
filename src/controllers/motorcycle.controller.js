@@ -5,18 +5,18 @@ const User = require ('../models/user.model')
 module.exports = {
   async create(req,res) {
     try {
-    const { body, user } = req;
-    const userId = user;
-    const newBike = await Motorcycle.create({...body, userId});
-    const fullUser = await User.findById(user);
+      const { body, user } = req;
+      const userId = user;
+      const newBike = await Motorcycle.create({...body, userId});
+      const fullUser = await User.findById(user);
 
-    fullUser.bikeIDs.push(newBike._id);
-    await fullUser.save({ validateBeforeSave: false })
+      fullUser.bikeIDs.push(newBike._id);
+      await fullUser.save({ validateBeforeSave: false })
 
-    res.status(201).json({ message: 'Motorcycle created succesfully' });
-    } catch(error) {
+      res.status(201).json({ message: 'Motorcycle created succesfully' });
+      } catch(error) {
         res.status(400).json({ error, message: 'Something went wrong' });
-    }
+      }
   },
 
   async listUserBikes(req, res) {
@@ -60,7 +60,12 @@ module.exports = {
       const userBikes = fullUser.bikeIDs;
 
       if( userBikes.indexOf( bikeId.toString()) >= 0 ) {
+
+        fullUser.bikeIDs.pull(bikeId);
+        fullUser.save({ validateBeforeSave: false });
+
         const deletedMotorcycle = await Motorcycle.findByIdAndDelete(bikeId);
+
         res.status(200).json({ message: 'Bike deleted', deletedMotorcycle });
       } else {
       throw 'Bike not owned'
