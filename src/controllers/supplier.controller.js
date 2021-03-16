@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const Supplier = require('../models/supplier.model');
 
 module.exports = {
@@ -8,11 +7,7 @@ module.exports = {
       const { body } = req;
       const supplier = await Supplier.create(body);
 
-      const token = jwt.sign({ supplierId: supplier._id }, process.env.SECRET, {
-        expiresIn: 60 * 60 * 24
-      });
-
-      res.status(201).json({ message: 'supplier created successfully', token });
+      res.status(201).json({ message: 'supplier created successfully' });
     } catch (error) {
       res.status(400).json({ message: error });
     }
@@ -32,10 +27,7 @@ module.exports = {
         throw Error('Usuario o contraseña inválida');
       };
 
-      const token = jwt.sign({ supplierId: supplier._id }, process.env.SECRET, {
-        expiresIn: 60 * 60 * 24,
-      });
-      res.status(201).json({token});
+      res.status(201).json({ message: 'singin successful'});
     } catch(error) {
       res.status(401).json({ message: error.message })
     }
@@ -68,9 +60,12 @@ module.exports = {
   },
   async destroy(req, res) {
     try {
-      const { supplier } = req;
+      const { 
+        body,
+        params: { supplierID }, 
+      } = req;
 
-      const supplierDelete = await Supplier.findByIdAndDelete(supplier).select('-password');
+      const supplierDelete = await Supplier.findByIdAndDelete(supplierID, body).select('-password');
       res.status(200).json({ message: 'supplier deleted', supplierDelete });
     } catch (error) {
       res.status(400).json({ message: 'supplier could not be deleted', error });
