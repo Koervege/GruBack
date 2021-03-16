@@ -30,6 +30,11 @@ const towSchema = new Schema({
     type: String,
     require: true,
   },
+  supplier: {
+      type: Schema.Types.ObjectId,
+      ref: 'Supplier',
+      require: true,
+  },
   photo: String,
   serviceIds: {
     type: [{ type: Schema.Types.ObjectId, ref: 'Service' }],

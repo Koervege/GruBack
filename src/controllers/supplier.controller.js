@@ -36,7 +36,10 @@ module.exports = {
     try {
       const { query } = req;
 
-      const suppliers = await Supplier.find(query).select('-password');
+      const suppliers = await Supplier.find(query).populate({
+        path: 'tows',
+        select: '-supplier -_id',
+      });
       res.status(200).json({ message: `${suppliers.length} suppliers found`, suppliers });
     } catch (error) {
       res.status(400).json({ message: 'suppliers could not be found', error });
@@ -56,7 +59,6 @@ module.exports = {
     } catch (error) {
       res.status(400).json({ message: 'supplier could not be updated', error });
     }
-    // res.json('estoy funcionando')
   },
   async destroy(req, res) {
     try {

@@ -6,7 +6,6 @@ const userRouter = require('./routes/user');
 const serviceRouter = require('./routes/service');
 const towRouter = require('./routes/tow');
 const supplierRouter = require('./routes/supplier');
-const { auth } = require('./utils/auth');
 
 const port = 8000;
 const app = express();
