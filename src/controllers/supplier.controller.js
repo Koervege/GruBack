@@ -42,7 +42,7 @@ module.exports = {
       res.status(400).json({ message: 'suppliers could not be found', error });
     }
   },
-  async update(req, res, next) {
+  async update(req, res) {
     try {
       const {
         body,
