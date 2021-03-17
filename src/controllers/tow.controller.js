@@ -1,11 +1,16 @@
 const Tow = require('../models/tow.model');
+const Supplier = require('../models/supplier.model')
 
 module.exports = {
   async create(req, res) {
     try {
-      const { body } = req;
+      const { body, user } = req;
 
-      const tow = await  Tow.create(body);
+      const tow = await Tow.create({...body, supplier: user});
+      const supplier = await Supplier.findById(user)
+
+      supplier.tows.push(tow._id);
+      await supplier.save({ validateBeforeSave: false });
       res.status(201).json(tow);
     } catch(error) {
       res.status(400).json({ message: 'Tow could not be created', error });
@@ -13,7 +18,10 @@ module.exports = {
   },
   async list(req, res) {
     try {
-      const tows = await Tow.find(); 
+      const tows = await Tow.find().populate({
+        path: 'supplier',
+        select: '-tows -_id -password',
+      }); 
       res.status(200).json({ message: `${tows.length} Tows was found`, tows  });
     } catch(error) {
       res.status(400).json({ message: 'Tows list error', error });
@@ -31,9 +39,9 @@ module.exports = {
   },
   async  update(req, res) {
     try {
-      const { body, params: { towId }} = req;
+      const { body, user} = req;
 
-      const tow = await Tow.findByIdAndUpdate( towId, body, { new:true });
+      const tow = await Tow.findByIdAndUpdate( user, body, { new:true });
       res.status(200).json({ message: 'Tow was updated', tow });
     } catch(error) {
       res.status(404).json({ message: 'Tow not updated', tow});  

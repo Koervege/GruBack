@@ -6,6 +6,7 @@ const userRouter = require('./routes/user');
 const motorcycleRouter = require('./routes/motorcycle');
 const serviceRouter = require('./routes/service');
 const towRouter = require('./routes/tow');
+const supplierRouter = require('./routes/supplier');
 
 const port = 8000;
 const app = express();
@@ -18,6 +19,7 @@ app.use('/users', userRouter);
 app.use('/motorcycles', motorcycleRouter);
 app.use('/services', serviceRouter);
 app.use('/tows', towRouter);
+app.use('/suppliers', supplierRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
