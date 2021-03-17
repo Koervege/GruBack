@@ -21,6 +21,7 @@ const motorcycleSchema = new Schema({
       }
     ] 
   },
+  brand: String,
   weight: {
     type: String,
     required: [ true, "El peso es requerido" ],
@@ -38,6 +39,7 @@ const motorcycleSchema = new Schema({
   serviceIds: {
     type: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
   },
+  photo: String,
 },
 {
   timestamps: true,
