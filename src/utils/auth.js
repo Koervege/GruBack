@@ -17,7 +17,7 @@ exports.auth = (req, res, next) => {
     const { userId } = jwt.verify(token, process.env.SECRET);
 
     req.user = userId;
-
+    
     next();
   } catch (error) {
     res.status(401).json({ message: 'Hola auth' });

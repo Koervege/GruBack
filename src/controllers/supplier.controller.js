@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Supplier = require('../models/supplier.model');
 
 module.exports = {
@@ -7,7 +8,13 @@ module.exports = {
       const { body } = req;
       const supplier = await Supplier.create(body);
 
-      res.status(201).json({ message: 'supplier created successfully' });
+      const token = jwt.sign(
+        { userId: supplier._id },
+        process.env.SECRET,
+        { expiresIn: 60 * 60 * 24 }
+      );
+
+      res.status(201).json({ message: 'supplier created successfully', token });
     } catch (error) {
       res.status(400).json({ message: error });
     }
@@ -27,7 +34,13 @@ module.exports = {
         throw Error('Usuario o contraseña inválida');
       };
 
-      res.status(201).json({ message: 'singin successful'});
+      const token = jwt.sign(
+        { userId: supplier._id },
+        process.env.SECRET,
+        { expiresIn: 60 * 60 * 24 }
+      );
+
+      res.status(201).json({ message: 'singin successful', token});
     } catch(error) {
       res.status(401).json({ message: error.message })
     }
@@ -49,10 +62,10 @@ module.exports = {
     try {
       const {
         body,
-        params: { supplierID },
+        user,
       } = req;
-
-      const supplierUpdate = await Supplier.findByIdAndUpdate(supplierID, body, {
+      
+      const supplierUpdate = await Supplier.findByIdAndUpdate(user, body, {
         new: true,
       }).select('-password');
       res.status(200).json({ message: 'supplier updated', supplierUpdate });
@@ -63,11 +76,10 @@ module.exports = {
   async destroy(req, res) {
     try {
       const { 
-        body,
-        params: { supplierID }, 
+        user, 
       } = req;
-
-      const supplierDelete = await Supplier.findByIdAndDelete(supplierID, body).select('-password');
+      
+      const supplierDelete = await Supplier.findByIdAndDelete(user).select('-password');
       res.status(200).json({ message: 'supplier deleted', supplierDelete });
     } catch (error) {
       res.status(400).json({ message: 'supplier could not be deleted', error });
