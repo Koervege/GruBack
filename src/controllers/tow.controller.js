@@ -40,8 +40,10 @@ module.exports = {
   async  update(req, res) {
     try {
       const { body, user} = req;
+      const { plateNum } = body;
 
-      const tow = await Tow.findByIdAndUpdate( user, body, { new:true });
+      const tow = await Tow.findOne(plateNum);
+      console.log(tow);
       res.status(200).json({ message: 'Tow was updated', tow });
     } catch(error) {
       res.status(404).json({ message: 'Tow not updated', tow});  
