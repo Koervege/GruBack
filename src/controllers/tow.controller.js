@@ -37,16 +37,40 @@ module.exports = {
       res.status(400).json({ message: 'Tow was not found', error});
     }
   },
-  async  update(req, res) {
+  async update(req, res) {
     try {
       const { body, user} = req;
       const { plateNum } = body;
 
-      const tow = await Tow.findOne(plateNum);
-      console.log(tow);
-      res.status(200).json({ message: 'Tow was updated', tow });
+      const tow = await Tow.findOne({plateNum});
+
+      if (tow.supplier == user) {
+        const towUpdate = await Tow.findByIdAndUpdate(tow._id, body, {
+          new: true,
+        });
+        res.status(200).json({ message: 'Tow was updated', towUpdate });
+      } else {
+        throw 'Tow is not owned by current supplier'
+      }
     } catch(error) {
-      res.status(404).json({ message: 'Tow not updated', tow});  
+      res.status(404).json({ message: 'Tow not updated', error});  
+    }
+  },
+  async destroy(req, res) {
+    try {
+      const { body, user} = req;
+      const { plateNum } = body;
+
+      const tow = await Tow.findOne({plateNum});
+
+      if (tow.supplier == user) {
+        const towDeleted = await Tow.findByIdAndDelete(tow._id);
+        res.status(200).json({ message: 'Tow was deleted', towDeleted });
+      } else {
+        throw 'Tow is not owned by current supplier'
+      }
+    } catch(error) {
+      res.status(404).json({ message: 'Tow not deleted', error});  
     }
   },
 }
