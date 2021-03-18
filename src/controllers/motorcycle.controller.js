@@ -6,11 +6,8 @@ module.exports = {
   async create(req,res) {
     try {
       const { body, user } = req;
-      console.log(body.userId);
-      console.log(user);
       const newBike = await Motorcycle.create({ ...body, userId: user });
       const fullUser = await User.findById(user);
-      console.log(newBike);
       fullUser.bikeIDs.push(newBike._id);
       await fullUser.save({ validateBeforeSave: false })
 
