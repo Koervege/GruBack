@@ -20,6 +20,6 @@ exports.auth = (req, res, next) => {
     
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Hola auth' });
+    res.status(401).json({ error });
   }
 };

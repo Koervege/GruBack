@@ -30,11 +30,15 @@ const serviceSchema = new Schema({
   servStat: {
     type: String,
   },
-  bikeIDs: {
-    type: [{ type: Schema.Types.ObjectId, ref: 'Motorcycle' }],
+  bikeID: {
+    type: Schema.Types.ObjectId, 
+    ref: 'Motorcycle',
+    required: true,
   },
-  towIDs: {
-    type: [{ type: Schema.Types.ObjectId, ref: 'Tow' }],
+  towID: {
+    type: Schema.Types.ObjectId, 
+    ref: 'Tow',
+    required: true,
   },
 },{
   timestamps: true,

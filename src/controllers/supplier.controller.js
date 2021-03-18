@@ -49,10 +49,7 @@ module.exports = {
     try {
       const { query } = req;
 
-      const suppliers = await Supplier.find(query).populate({
-        path: 'tows',
-        select: '-supplier -_id',
-      });
+      const suppliers = await Supplier.find(query).populate('tows');
       res.status(200).json({ message: `${suppliers.length} suppliers found`, suppliers });
     } catch (error) {
       res.status(400).json({ message: 'suppliers could not be found', error });
