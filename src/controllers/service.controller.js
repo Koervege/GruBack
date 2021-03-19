@@ -48,7 +48,23 @@ module.exports = {
     try {
       const {query} = req;
 
-      const services = await Service.find(query);
+      const services = await Service.find(query)
+        .populate({
+          path: 'bikeID',
+          select: '-serviceIds',
+          populate: {
+            path: 'userId',
+            select: '-password -bikeIDs',
+          },
+        })
+        .populate({
+          path: 'towID',
+          select: '-serviceIds',
+          populate: {
+            path: 'supplier',
+            select: '-password -tows',
+          },
+        });
       res.status(200).json({ message: `${services.length} services found`, services });
     } catch (error) {
       res.status(400).json({ message:'services could not be found', error })
