@@ -8,9 +8,9 @@ module.exports = {
     try {
       const { body, user } = req;
 
-      const userMatch = await User.findById(user);
+      const isUser = await User.findById(user);
 
-      if (!userMatch) {
+      if (!isUser) {
         throw Error('Debes ser cliente para crear un servicio');
       }
 
@@ -27,7 +27,7 @@ module.exports = {
       }
 
       if (motorcycle.userId.toString() === user.toString()) {
-        const service = await (await Service.create(body));
+        const service = await Service.create(body);
         motorcycle.serviceIds.push(service._id);
         await motorcycle.save({ validateBeforeSave: false });
         
