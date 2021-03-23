@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const { connect } = require('./db');
+const userRouter = require('./routes/user');
 const clientRouter = require('./routes/client');
 const motorcycleRouter = require('./routes/motorcycle');
 const serviceRouter = require('./routes/service');
@@ -15,6 +16,7 @@ connect();
 app.use(express.json());
 app.use(morgan('dev'));
 
+app.use('/users', userRouter);
 app.use('/clients', clientRouter);
 app.use('/motorcycles', motorcycleRouter);
 app.use('/services', serviceRouter);

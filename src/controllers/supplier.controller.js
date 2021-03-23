@@ -9,7 +9,7 @@ module.exports = {
       const supplier = await Supplier.create(body);
 
       const token = jwt.sign(
-        { userId: supplier._id },
+        { userId: supplier._id, userType: 'supplier' },
         process.env.SECRET,
         { expiresIn: 60 * 60 * 24 }
       );
@@ -17,32 +17,6 @@ module.exports = {
       res.status(201).json({ message: 'supplier created successfully', token });
     } catch (error) {
       res.status(400).json({ message: error });
-    }
-  },
-  async signin(req, res) {
-    try {
-      const { email, password } = req.body;
-      const supplier = await Supplier.findOne({ email });
-
-      if(!supplier) {
-        throw Error('Usuario o contraseña inválida');
-      };
-
-      const isValid = await bcrypt.compare(password, supplier.password);
-
-      if(!isValid) {
-        throw Error('Usuario o contraseña inválida');
-      };
-
-      const token = jwt.sign(
-        { userId: supplier._id },
-        process.env.SECRET,
-        { expiresIn: 60 * 60 * 24 }
-      );
-
-      res.status(201).json({ message: 'singin successful', token});
-    } catch(error) {
-      res.status(401).json({ message: error.message })
     }
   },
   async list(req, res) {
