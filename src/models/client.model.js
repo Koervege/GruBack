@@ -50,6 +50,6 @@ clientSchema.pre('save', async function () {
   }
 });
 
-const Client = model('Client', userSchema);
+const Client = model('Client', clientSchema);
 
 module.exports = Client;
