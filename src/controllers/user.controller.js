@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Client = require('../models/client.model');
 const Supplier = require('../models/supplier.model');
 
@@ -6,7 +8,7 @@ module.exports = {
   async signin(req, res) {
     try {
       const { email, password } = req.body;
-      const userType = '';
+      let userType = '';
       let validUser = await Client.findOne({ email });
 
       if(!validUser) {
