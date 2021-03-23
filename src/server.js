@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const { connect } = require('./db');
 const userRouter = require('./routes/user');
 const clientRouter = require('./routes/client');
@@ -14,6 +15,7 @@ const app = express();
 connect();
 
 app.use(express.json());
+app.use(cors({origin: '*'}));
 app.use(morgan('dev'));
 
 app.use('/users', userRouter);

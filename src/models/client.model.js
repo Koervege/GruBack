@@ -15,8 +15,8 @@ const clientSchema = new Schema({
     validate: {
       async validator(email) {
         try {
-          const user = await models.User.findOne({ email });
-          return !user;
+          const client = await models.Client.findOne({ email });
+          return !client;
         } catch (err) {
           return false;
         }
@@ -50,6 +50,6 @@ clientSchema.pre('save', async function () {
   }
 });
 
-const Client = model('Client', userSchema);
+const Client = model('Client', clientSchema);
 
 module.exports = Client;

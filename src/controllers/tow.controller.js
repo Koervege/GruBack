@@ -18,10 +18,15 @@ module.exports = {
   },
   async list(req, res) {
     try {
-      const tows = await Tow.find().populate({
-        path: 'supplier',
-        select: '-tows -_id -password',
-      }); 
+      const tows = await Tow.find()
+        .populate({
+          path: 'supplier',
+          select: '-tows -password',
+        })
+        .populate({
+          path: 'serviceIds',
+          select: '-_id',
+        }); 
       res.status(200).json({ message: `${tows.length} Tows was found`, tows  });
     } catch(error) {
       res.status(400).json({ message: 'Tows list error', error });
