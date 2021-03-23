@@ -1,5 +1,5 @@
 const Service = require('../models/service.model');
-const User = require('../models/user.model');
+const client = require('../models/client.model');
 const Motorcycle = require('../models/motorcycle.model');
 const Tow = require('../models/tow.model')
 
@@ -8,7 +8,7 @@ module.exports = {
     try {
       const { body, user } = req;
 
-      const isUser = await User.findById(user);
+      const isUser = await client.findById(user);
 
       if (!isUser) {
         throw Error('Debes ser cliente para crear un servicio');

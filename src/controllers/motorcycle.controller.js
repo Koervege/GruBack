@@ -1,15 +1,15 @@
 const jwt = require('jsonwebtoken');
 const Motorcycle = require('../models/motorcycle.model');
-const User = require ('../models/user.model')
+const Client = require ('../models/client.model')
 
 module.exports = {
   async create(req,res) {
     try {
       const { body, user } = req;
       const newBike = await Motorcycle.create({ ...body, userId: user });
-      const fullUser = await User.findById(user);
-      fullUser.bikeIDs.push(newBike._id);
-      await fullUser.save({ validateBeforeSave: false })
+      const fullClient = await Client.findById(user);
+      fullClient.bikeIDs.push(newBike._id);
+      await fullClient.save({ validateBeforeSave: false })
 
       res.status(201).json({ message: 'Motorcycle created succesfully' });
       } catch(error) {
@@ -20,10 +20,10 @@ module.exports = {
   async listUserBikes(req, res) {
     try {
       const { user } = req;
-      const fullUser = await User.findById(user);
-      const userBikes = fullUser.bikeIDs;
+      const fullClient = await Client.findById(user);
+      const clientBikes = fullClient.bikeIDs;
 
-      res.status(200).json({message: 'Bikes owned by user:', userBikes});
+      res.status(200).json({message: 'Bikes owned by client:', clientBikes});
     } catch(error) {
       res.status(400).json({ message: 'motorcycle could not be updated', error });
     }
@@ -42,7 +42,7 @@ module.exports = {
 
         res.status(200).json({ message: 'motorcycle updated', motorcycleUpdate });
       } else {
-        throw 'Bike is not owned by current user'
+        throw 'Bike is not owned by current client'
       }
     } catch (error) {
       res.status(400).json({ message: 'motorcycle could not be updated', error });
@@ -53,13 +53,13 @@ module.exports = {
     try {
       const { body, user } = req;
       const bikeId = body.bikeId;
-      const fullUser = await User.findById(user);
+      const fullClient = await Client.findById(user);
       const bike = await Motorcycle.findById(bikeId);
 
       if (bike.userId.toString() === user.toString()) {
 
-        fullUser.bikeIDs.pull(bikeId);
-        fullUser.save({ validateBeforeSave: false });
+        fullClient.bikeIDs.pull(bikeId);
+        fullClient.save({ validateBeforeSave: false });
 
         const deletedMotorcycle = await Motorcycle.findByIdAndDelete(bikeId);
 
