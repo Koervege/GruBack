@@ -8,9 +8,9 @@ module.exports = {
     try {
       const { body, user } = req;
 
-      const isUser = await client.findById(user);
+      const isClient = await client.findById(user);
 
-      if (!isUser) {
+      if (!isClient) {
         throw Error('Debes ser cliente para crear un servicio');
       }
 
