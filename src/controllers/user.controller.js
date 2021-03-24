@@ -11,7 +11,7 @@ module.exports = {
       let userType = '';
       let validUser = await Client.findOne({ email });
 
-      let userType = 'client'
+      userType = 'client'
 
       if(!validUser) {
         validUser = await Supplier.findOne({ email })
