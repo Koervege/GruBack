@@ -11,25 +11,16 @@ module.exports = {
       let userType = '';
       let validUser = await Client.findOne({ email });
 
-      if(!validUser) {
-        validUser = await Supplier.findOne({ email });
+let userType = 'client'
 
-        if(!validUser) {
-          throw Error('email o contraseña inválida');
+if(!validUser) {
+  validUser = await Supplier.findOne({ email })
+  userType = 'supplier'
+}
 
-        } else {
-          userType = 'supplier'
-        }
-
-      } else {
-        userType = 'client'
-      }
-
-      const isValid = await bcrypt.compare(password, validUser.password);
-
-      if(!isValid) {
-        throw Error('email o contraseña inválida');
-      };
+if(!validUser) {
+  throw Error('email o contraseña invalida')
+}
 
       const token = jwt.sign(
         { userId: validUser._id, userType }, 
@@ -37,7 +28,7 @@ module.exports = {
         { expiresIn: 60 * 60 * 24 }
       );
 
-      res.status(201).json({ token });
+      res.status(201).json({ token, userType });
     } catch(error) {
       res.status(401).json({ message: error.message })
     }
