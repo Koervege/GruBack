@@ -11,16 +11,16 @@ module.exports = {
       let userType = '';
       let validUser = await Client.findOne({ email });
 
-let userType = 'client'
+      let userType = 'client'
 
-if(!validUser) {
-  validUser = await Supplier.findOne({ email })
-  userType = 'supplier'
-}
+      if(!validUser) {
+        validUser = await Supplier.findOne({ email })
+        userType = 'supplier'
+      }
 
-if(!validUser) {
-  throw Error('email o contraseña invalida')
-}
+      if(!validUser) {
+        throw Error('email o contraseña invalida')
+      }
 
       const token = jwt.sign(
         { userId: validUser._id, userType }, 
