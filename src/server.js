@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const { connect } = require('./db');
+const userRouter = require('./routes/user');
 const clientRouter = require('./routes/client');
 const motorcycleRouter = require('./routes/motorcycle');
 const serviceRouter = require('./routes/service');
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(cors({origin: '*'}));
 app.use(morgan('dev'));
 
+app.use('/users', userRouter);
 app.use('/clients', clientRouter);
 app.use('/motorcycles', motorcycleRouter);
 app.use('/services', serviceRouter);
