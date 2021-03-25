@@ -17,6 +17,9 @@ exports.formData = (req, res, next) => {
   function done() {
     if(uploadingFile) return;
     if(uploadingCount > 0) return;
+
+    req.body.photo = req.body.file.secure_url;
+
     next();
   };
 
