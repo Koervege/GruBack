@@ -6,11 +6,9 @@ const Tow = require('../models/tow.model')
 module.exports = {
   async create(req, res) {
     try {
-      const { body, user } = req;
+      const { body, user, userType } = req;
 
-      const isClient = await client.findById(user);
-
-      if (!isClient) {
+      if (userType !== 'client') {
         throw Error('Debes ser cliente para crear un servicio');
       }
 

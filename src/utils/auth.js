@@ -14,9 +14,10 @@ exports.auth = (req, res, next) => {
       throw new Error('Su sesión expiró');
     }
 
-    const { userId } = jwt.verify(token, process.env.SECRET);
+    const { userId, userType } = jwt.verify(token, process.env.SECRET);
 
     req.user = userId;
+    req.userType = userType;
     
     next();
   } catch (error) {
