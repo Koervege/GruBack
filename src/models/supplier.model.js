@@ -33,7 +33,7 @@ const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}
     required: [true, 'El campo número de teléfono es requerido'],
     minlength: [10, 'Tiene que ser un número de celular'],
   },
-  tows: {
+  towIDs: {
     type: [{ type: Schema.Types.ObjectId, ref: 'Tow' }],
   },
   photo: {

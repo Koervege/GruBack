@@ -6,7 +6,7 @@ module.exports = {
   async create(req,res) {
     try {
       const { body, user } = req;
-      const newBike = await Motorcycle.create({ ...body, userId: user });
+      const newBike = await Motorcycle.create({ ...body, userID: user });
       const fullClient = await Client.findById(user);
       fullClient.bikeIDs.push(newBike._id);
       await fullClient.save({ validateBeforeSave: false })
@@ -32,11 +32,11 @@ module.exports = {
   async update(req, res) {
     try {
       const { body, user } = req;
-      const bikeId = body.bikeId;
-      const bike = await Motorcycle.findById(bikeId);
+      const bikeID = body.bikeID;
+      const bike = await Motorcycle.findById(bikeID);
 
-      if (bike.userId.toString() === user.toString()) {
-        const motorcycleUpdate = await Motorcycle.findByIdAndUpdate(bikeId, body, {
+      if (bike.userID.toString() === user.toString()) {
+        const motorcycleUpdate = await Motorcycle.findByIdAndUpdate(bikeID, body, {
           new: true,
         });
 
@@ -52,16 +52,16 @@ module.exports = {
   async destroy(req, res) {
     try {
       const { body, user } = req;
-      const bikeId = body.bikeId;
+      const bikeID = body.bikeID;
       const fullClient = await Client.findById(user);
-      const bike = await Motorcycle.findById(bikeId);
+      const bike = await Motorcycle.findById(bikeID);
 
-      if (bike.userId.toString() === user.toString()) {
+      if (bike.userID.toString() === user.toString()) {
 
-        fullClient.bikeIDs.pull(bikeId);
+        fullClient.bikeIDs.pull(bikeID);
         fullClient.save({ validateBeforeSave: false });
 
-        const deletedMotorcycle = await Motorcycle.findByIdAndDelete(bikeId);
+        const deletedMotorcycle = await Motorcycle.findByIdAndDelete(bikeID);
 
         res.status(200).json({ message: 'Bike deleted', deletedMotorcycle });
       } else {

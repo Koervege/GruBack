@@ -6,10 +6,9 @@ module.exports = {
     try {
       const { body, user } = req;
 
-      const tow = await Tow.create({...body, supplier: user});
-      const supplier = await Supplier.findById(user)
-
-      supplier.tows.push(tow._id);
+      const tow = await Tow.create({...body, supplierID: user});
+      const supplier = await Supplier.findById(user);
+      supplier.towIDs.push(tow._id);
       await supplier.save({ validateBeforeSave: false });
       res.status(201).json(tow);
     } catch(error) {
@@ -18,25 +17,26 @@ module.exports = {
   },
   async list(req, res) {
     try {
+      const { user } = req;
       const tows = await Tow.find()
         .populate({
-          path: 'supplier',
-          select: '-tows -password',
+          path: 'supplierID',
+          select: '-towIDs -password',
         })
         .populate({
-          path: 'serviceIds',
+          path: 'serviceIDs',
           select: '-_id',
         }); 
-      res.status(200).json({ message: `${tows.length} Tows was found`, tows  });
+      res.status(200).json({ message: `${tows.length} Tows was found`, tows, userID: user });
     } catch(error) {
       res.status(400).json({ message: 'Tows list error', error });
     }
   },
   async show(req, res) {
     try {
-      const { towId } = req.params
+      const { towID } = req.params
 
-      const tow = await Tow.findById(towId);
+      const tow = await Tow.findById(towID);
       res.status(200).json({ message: 'Tow was found', tow});
     } catch(error) {
       res.status(400).json({ message: 'Tow was not found', error});
@@ -49,7 +49,7 @@ module.exports = {
 
       const tow = await Tow.findOne({plateNum});
 
-      if (tow.supplier == user) {
+      if (tow.supplierID == user) {
         const towUpdate = await Tow.findByIdAndUpdate(tow._id, body, {
           new: true,
         });
@@ -66,9 +66,14 @@ module.exports = {
       const { body, user} = req;
       const { plateNum } = body;
 
+      const supplier = await Supplier.findById(user)
       const tow = await Tow.findOne({plateNum});
 
-      if (tow.supplier == user) {
+      if (tow.supplierID.toString() == user.toString()) {
+
+        supplier.towIDs.pull(tow._id);
+        supplier.save({ validateBeforeSave: false });
+        
         const towDeleted = await Tow.findByIdAndDelete(tow._id);
         res.status(200).json({ message: 'Tow was deleted', towDeleted });
       } else {
