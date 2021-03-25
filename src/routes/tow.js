@@ -3,8 +3,8 @@ const { create, list, show, update, destroy } = require('../controllers/tow.cont
 const { auth } = require('../utils/auth')
 
 router.route('/').post(auth, create);
-router.route('/').get(list);
-router.route('/:towId').get(show);
+router.route('/').get(auth, list);
+router.route('/:towID').get(show);
 router.route('/').put(auth, update);
 router.route('/').delete(auth, destroy);
 

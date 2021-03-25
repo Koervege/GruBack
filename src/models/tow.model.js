@@ -1,6 +1,6 @@
 const {Schema, model, models} = require('mongoose');
 
-const plateRegex = /^([A-Z]{3}\d{3,4})$/;
+const plateRegex = /^([A-Z]{3}\d{3})$/;
 
 const towSchema = new Schema({
   plateNum: {
@@ -30,13 +30,13 @@ const towSchema = new Schema({
     type: String,
     require: true,
   },
-  supplier: {
+  supplierID: {
       type: Schema.Types.ObjectId,
       ref: 'Supplier',
       require: true,
   },
   photo: String,
-  serviceIds: {
+  serviceIDs: {
     type: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
   }
 

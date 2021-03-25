@@ -24,12 +24,12 @@ module.exports = {
         throw Error('No está registrada la grúa');
       }
 
-      if (motorcycle.userId.toString() === user.toString()) {
+      if (motorcycle.userID.toString() === user.toString()) {
         const service = await Service.create(body);
-        motorcycle.serviceIds.push(service._id);
+        motorcycle.serviceIDs.push(service._id);
         await motorcycle.save({ validateBeforeSave: false });
         
-        tow.serviceIds.push(service._id);
+        tow.serviceIDs.push(service._id);
         await tow.save({ validateBeforeSave: false });
         
         res.status(200).json({ message: 'service created successfully', service });
@@ -44,35 +44,35 @@ module.exports = {
   },
   async list(req, res) {
     try {
-      const {query} = req;
+      const {query, user} = req;
 
       const services = await Service.find(query)
         .populate({
           path: 'bikeID',
-          select: '-serviceIds',
+          select: '-serviceIDs',
           populate: {
-            path: 'userId',
+            path: 'userID',
             select: '-password -bikeIDs',
           },
         })
         .populate({
           path: 'towID',
-          select: '-serviceIds',
+          select: '-serviceIDs',
           populate: {
-            path: 'supplier',
+            path: 'supplierID',
             select: '-password -tows',
           },
         });
-      res.status(200).json({ message: `${services.length} services found`, services });
+      res.status(200).json({ message: `${services.length} services found`, services, userID: user });
     } catch (error) {
       res.status(400).json({ message:'services could not be found', error })
     }
   },
   async update(req, res) {
     try {
-      const {body, params: {serviceId} } = req;
+      const {body, params: {serviceID} } = req;
 
-      const service = await Service.findByIdAndUpdate(serviceId, body, {new: true});
+      const service = await Service.findByIdAndUpdate(serviceID, body, {new: true});
       res.status(200).json({ message:'service updated', service });
     } catch (error) {
       res.status(400).json({ message:'services could not be updated', error });

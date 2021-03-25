@@ -1,6 +1,6 @@
 const { model, Schema, models } = require('mongoose');
 
-const plateRegex = /^([A-Z]{3}\d{3,4})$/;
+const plateRegex = /^([A-Z]{3}\d{2}[A-Z]{1})$/;
 
 const motorcycleSchema = new Schema({
   plateNum: {
@@ -33,12 +33,12 @@ const motorcycleSchema = new Schema({
   },
   cc: String,
 
-  userId: {
+  userID: {
     type: Schema.Types.ObjectId, 
     ref: 'Client',
     required: true,
   },
-  serviceIds: {
+  serviceIDs: {
     type: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
   },
   photo: String,
