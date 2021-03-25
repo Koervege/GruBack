@@ -19,7 +19,6 @@ const serviceSchema = new Schema({
   },
   hour: {
     type: String,
-    required: [true, 'El campo de hora del servicio es requerido'],
   },
   rating: {
     type: Number,
