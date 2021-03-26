@@ -18,8 +18,6 @@ exports.formData = (req, res, next) => {
     if(uploadingFile) return;
     if(uploadingCount > 0) return;
 
-    req.body.photo = req.body.file.secure_url;
-
     next();
   };
 
@@ -37,7 +35,7 @@ exports.formData = (req, res, next) => {
     (err, res) => {
       if(err) throw new Error('Something went wrong');
 
-      req.body[key] = res;
+      req.body[key] = res.secure_url;
       uploadingFile = false;
       uploadingCount--;
 
