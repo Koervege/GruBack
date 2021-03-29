@@ -9,12 +9,12 @@ module.exports = {
     try {
       const { email, password } = req.body;
       let userType = '';
-      let validUser = await Client.findOne({ email });
-
+      let validUser = await Client.findOne({ email }).populate('bikeIDs');
+     
       userType = 'client';
 
       if (!validUser) {
-        validUser = await Supplier.findOne({ email });
+        validUser = await Supplier.findOne({ email }).populate('towIDs');
         userType = 'supplier';
       }
 
@@ -33,7 +33,19 @@ module.exports = {
         { expiresIn: 60 * 60 * 24 }
       );
 
-      res.status(201).json({ token, userType });
+      res.status(201).json({ 
+        token, 
+        userType, 
+        userFront: {
+          bikeIDs: validUser.bikeIDs, 
+          _id: validUser._id,
+          name: validUser.name,
+          email: validUser.email,
+          phoneNum: validUser.phoneNum,
+          photo: validUser.photo,
+        }
+      });
+      
     } catch(error) {
       res.status(401).json({ message: error.message })
     }

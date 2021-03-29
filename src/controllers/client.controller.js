@@ -13,7 +13,16 @@ module.exports = {
         { expiresIn: 60 * 60 * 24 }
       );
 
-      res.status(201).json({ message: 'client created successfully', token });
+      res.status(201).json({
+        message: 'client created successfully',
+        token,
+        userFront: {
+          _id: client._id,
+          name: client.name,
+          email: client.email,
+          phoneNum: client.phoneNum,
+        },
+      });
     } catch (error) {
       res.status(400).json({ message: error });
     }

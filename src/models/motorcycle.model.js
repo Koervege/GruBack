@@ -33,7 +33,7 @@ const motorcycleSchema = new Schema({
   },
   cc: String,
 
-  userID: {
+  clientID: {
     type: Schema.Types.ObjectId, 
     ref: 'Client',
     required: true,

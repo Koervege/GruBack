@@ -6,7 +6,7 @@ module.exports = {
   async create(req,res) {
     try {
       const { body, user } = req;
-      const newBike = await Motorcycle.create({ ...body, userID: user });
+      const newBike = await Motorcycle.create({ ...body, clientID: user });
       const fullClient = await Client.findById(user);
       fullClient.bikeIDs.push(newBike._id);
       await fullClient.save({ validateBeforeSave: false })
@@ -35,7 +35,7 @@ module.exports = {
       const bikeID = body.bikeID;
       const bike = await Motorcycle.findById(bikeID);
 
-      if (bike.userID.toString() === user.toString()) {
+      if (bike.clientID.toString() === user.toString()) {
         const motorcycleUpdate = await Motorcycle.findByIdAndUpdate(bikeID, body, {
           new: true,
         });
@@ -56,7 +56,7 @@ module.exports = {
       const fullClient = await Client.findById(user);
       const bike = await Motorcycle.findById(bikeID);
 
-      if (bike.userID.toString() === user.toString()) {
+      if (bike.clientID.toString() === user.toString()) {
 
         fullClient.bikeIDs.pull(bikeID);
         fullClient.save({ validateBeforeSave: false });
