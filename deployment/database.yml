@@ -1,5 +1,3 @@
-# kubectl exec -it gruappdatabasestatefulset-0 -c gruapp-database -- mongo --eval 'rs.initiate({ _id: "MainRepSet", version: 1, members: [ { _id: 0, host: "gruappdatabasestatefulset-0.gruappdatabaseservice.default.svc.cluster.local:27017" } ] })'
-# kubectl exec gruappdatabasestatefulset-0 -c gruapp-database -- mongo --eval 'db.getSiblingDB("admin").createUser({ user: "main_admin", pwd: "12345", roles: [ { role: "root", db: "admin" } ] });'
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
