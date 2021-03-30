@@ -37,6 +37,24 @@ module.exports = {
     } catch(error) {
       res.status(401).json({ message: error.message })
     }
-  }
+  },
 
+  async getLoggedUserInfo(req, res) {
+    try {
+      const { user, userType } = req;
+      let userFront;
+
+      if(userType === 'client') {
+        userFront = await Client.findById(user).select('-password');
+      } else if(userType === 'supplier') {
+        userFront = await Supplier.findById(user).select('-password');
+      } else {
+        throw new Error('invalid token')
+      }
+
+      res.status(201).json({ userFront, userType })
+    } catch(error) {
+      res.status(401).json({ message: error.message })
+    }
+  },
 };
