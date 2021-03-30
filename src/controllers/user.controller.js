@@ -44,7 +44,7 @@ module.exports = {
           email: validUser.email,
           phoneNum: validUser.phoneNum,
           photo: validUser.photo,
-        }
+        },
       });
       
     } catch(error) {
@@ -55,17 +55,28 @@ module.exports = {
   async getLoggedUserInfo(req, res) {
     try {
       const { user, userType } = req;
-      let userFront;
+      let loggedUser;
 
       if(userType === 'client') {
-        userFront = await Client.findById(user).select('-password');
+        loggedUser = await Client.findById(user);
       } else if(userType === 'supplier') {
-        userFront = await Supplier.findById(user).select('-password');
+        loggedUser = await Supplier.findById(user);
       } else {
         throw new Error('invalid token')
       }
 
-      res.status(201).json({ userFront, userType })
+      res.status(201).json({ 
+        userType,
+        userFront: {
+          bikeIDs: loggedUser.bikeIDs,
+          towIDs: loggedUser.towIDs, 
+          _id: loggedUser._id,
+          name: loggedUser.name,
+          email: loggedUser.email,
+          phoneNum: loggedUser.phoneNum,
+          photo: loggedUser.photo,
+        },
+       })
     } catch(error) {
       res.status(401).json({ message: error.message })
     }
