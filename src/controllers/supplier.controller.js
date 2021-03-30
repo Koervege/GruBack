@@ -13,7 +13,16 @@ module.exports = {
         { expiresIn: 60 * 60 * 24 }
       );
 
-      res.status(201).json({ message: 'supplier created successfully', token });
+      res.status(201).json({
+        message: 'supplier created successfully',
+        token,
+        userFront: {
+          _id: supplier._id,
+          name: supplier.name,
+          email: supplier.email,
+          phoneNum: supplier.phoneNum,
+        },
+      });
     } catch (error) {
       res.status(400).json({ message: error });
     }
@@ -45,9 +54,7 @@ module.exports = {
   },
   async destroy(req, res) {
     try {
-      const { 
-        user, 
-      } = req;
+      const { user } = req;
       
       const supplierDelete = await Supplier.findByIdAndDelete(user).select('-password');
       res.status(200).json({ message: 'supplier deleted', supplierDelete });
