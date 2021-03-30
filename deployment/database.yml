@@ -1,0 +1,61 @@
+# kubectl exec -it gruappdatabasestatefulset-0 -c gruapp-database -- mongo --eval 'rs.initiate({ _id: "MainRepSet", version: 1, members: [ { _id: 0, host: "gruappdatabasestatefulset-0.gruappdatabaseservice.default.svc.cluster.local:27017" } ] })'
+# kubectl exec gruappdatabasestatefulset-0 -c gruapp-database -- mongo --eval 'db.getSiblingDB("admin").createUser({ user: "main_admin", pwd: "12345", roles: [ { role: "root", db: "admin" } ] });'
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gruappdatabasestatefulset
+spec:
+  serviceName: gruappdatabaseservice
+  replicas: 1
+  selector:
+    matchLabels:
+      role: gruappmongolabel
+  template:
+    metadata:
+      labels:
+        role: gruappmongolabel
+        replicaSet: MainRepSet
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: replicaSet
+                      operator: In
+                      values:
+                        - MainRepSet
+                topologyKey: kubernetes.io/hostname
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: gruapp-database
+          image: mongo
+          command:
+            - "mongod"
+            - "--wiredTigerCacheSizeGB"
+            - "0.1"
+            - "--bind_ip"
+            - "0.0.0.0"
+            - "--replSet"
+            - "MainRepSet"
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 200Mi
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: gruappdatabasevolumeclaim
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: gruappdatabasevolumeclaim
+        annotations:
+          volume.beta.kubernetes.io/storage-class: "standard"
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi

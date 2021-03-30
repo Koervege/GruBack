@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gruappbackenddeployment
+spec:
+  selector:
+    matchLabels:
+      app: gruappbackendlabel
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: gruappbackendlabel
+    spec:
+      containers:
+        - name: gruappbackend
+          imagePullPolicy: Never
+          image: gruapp-backend
+          env:
+            - name: PORT
+              value: "8000"
+            - name: MONGO_URI
+              value: "mongodb://gruappdatabaseservice:27017/gruappdb"

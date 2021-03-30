@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gruappfrontenddeployment
+spec:
+  selector:
+    matchLabels:
+      app: gruappfrontendlabel
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gruappfrontendlabel
+    spec:
+      containers:
+        - name: gruappfrontend
+          imagePullPolicy: Never
+          image: gruapp-frontend
+          ports:
+          - containerPort: 5000
