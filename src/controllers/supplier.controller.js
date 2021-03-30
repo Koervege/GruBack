@@ -54,9 +54,7 @@ module.exports = {
   },
   async destroy(req, res) {
     try {
-      const { 
-        user, 
-      } = req;
+      const { user } = req;
       
       const supplierDelete = await Supplier.findByIdAndDelete(user).select('-password');
       res.status(200).json({ message: 'supplier deleted', supplierDelete });

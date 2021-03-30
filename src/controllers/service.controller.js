@@ -24,7 +24,7 @@ module.exports = {
         throw Error('No está registrada la grúa');
       }
 
-      if (motorcycle.userID.toString() === user.toString()) {
+      if (motorcycle.clientID.toString() === user.toString()) {
         const service = await Service.create(body);
         motorcycle.serviceIDs.push(service._id);
         await motorcycle.save({ validateBeforeSave: false });
@@ -51,7 +51,7 @@ module.exports = {
           path: 'bikeID',
           select: '-serviceIDs',
           populate: {
-            path: 'userID',
+            path: 'clientID',
             select: '-password -bikeIDs',
           },
         })
@@ -60,7 +60,7 @@ module.exports = {
           select: '-serviceIDs',
           populate: {
             path: 'supplierID',
-            select: '-password -tows',
+            select: '-password -towIDs',
           },
         });
       res.status(200).json({ message: `${services.length} services found`, services, userID: user });

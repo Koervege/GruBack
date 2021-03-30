@@ -37,7 +37,8 @@ module.exports = {
         token, 
         userType, 
         userFront: {
-          bikeIDs: validUser.bikeIDs, 
+          bikeIDs: validUser.bikeIDs,
+          towIDs: validUser.towIDs, 
           _id: validUser._id,
           name: validUser.name,
           email: validUser.email,
