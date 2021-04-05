@@ -21,7 +21,10 @@ const towSchema = new Schema({
       }
     ] 
   },
-  status: Boolean,
+  status: {
+    type: Boolean,
+    default: false,
+  },
   brand: {
     type: String,
     require: true,

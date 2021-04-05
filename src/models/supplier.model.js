@@ -39,6 +39,14 @@ const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}
   photo: {
     type: String,
   },
+  emailIsConfirmed: {
+    type: Boolean,
+    default: false,
+  },
+  emailToken: {
+    type: Number,
+    default: Math.random(),
+  }
 },
 {
   timestamps: true,

@@ -44,6 +44,8 @@ module.exports = {
         user,
       } = req;
 
+      delete body.emailIsConfirmed;
+
       const clientUpdate = await Client.findByIdAndUpdate(user, body, {
         new: true,
       }).select('-password');

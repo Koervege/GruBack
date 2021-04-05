@@ -39,6 +39,14 @@ const clientSchema = new Schema({
   photo: {
     type: String,
   },
+  emailIsConfirmed: {
+    type: Boolean,
+    default: false,
+  },
+  emailToken: {
+    type: Number,
+    default: Math.random(),
+  }
 },
 {
   timestamps: true,
