@@ -105,7 +105,7 @@ module.exports = {
       const emailStatus = mailer(email, 'Confirma tu Correo', emailText);
       if(emailStatus !== 'Success!') throw new Error(emailStatus);
 
-      res.status(200).json({ emailToken, fullUser });
+      res.status(200).json({ emailToken });
     } catch(err) {
       res.status(406).json({ message: err.message });
     };
