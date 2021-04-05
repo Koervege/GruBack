@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Client = require('../models/client.model');
 const Supplier = require('../models/supplier.model');
+const { mailer } = require('../utils/mailer')
 
 module.exports = {
 
@@ -80,5 +81,59 @@ module.exports = {
     } catch(error) {
       res.status(401).json({ message: error.message })
     }
+  },
+
+  async sendConfirmationEmail(req, res) {
+    try{
+      const { userType, email } = req.body;
+      const { user } = req;
+      let fullUser = {};
+      const emailToken = Math.floor(Math.random() * 100000);
+
+      if(userType === 'client') {
+        fullUser = await Client.findByIdAndUpdate(user, {$set: { emailToken}}, {new: true, upsert: true})
+      } else if(userType === 'supplier') {
+        fullUser = await Supplier.findByIdAndUpdate(user, {$set: { emailToken}}, {new: true, upsert: true})
+      } else {
+        throw new Error('invalid user id');
+      };
+
+      const emailText = `Hola, ${fullUser.name}! \
+        Recibimos una petición para validar este correo en GruApp \
+        tu Token es ${emailToken}`;
+
+      const emailStatus = mailer(email, 'Confirma tu Correo', emailText);
+      if(emailStatus !== 'Success!') throw new Error(emailStatus);
+
+      res.status(200).json({ emailToken, fullUser });
+    } catch(err) {
+      res.status(406).json({ message: err.message });
+    };
+  },
+  async confirmEmail(req, res) {
+    const { userType, emailToken } = req.body;
+    const { user } = req;
+    let fullUser = {};
+    
+    try {
+      if(userType === 'client') {
+        fullUser = await Client.findById(user)
+      } else if(userType === 'supplier') {
+        fullUser = await Supplier.findById(user)
+      } else {
+        throw new Error('Invalid user id');
+      };
+  
+      if(fullUser.emailToken == emailToken) {
+        fullUser.emailIsConfirmed = true;
+        fullUser.save({ validateBeforeSave: false });
+      } else {
+        throw new Error('Invalid Email Token');
+      };
+  
+      res.status(200).json( 'Email confirmed' );
+    } catch(error) {
+      res.status(406).json({ message: error.message });
+    };
   },
 };
