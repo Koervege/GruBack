@@ -10,7 +10,7 @@ const serviceRouter = require('./routes/service');
 const towRouter = require('./routes/tow');
 const supplierRouter = require('./routes/supplier');
 
-const port = 8000;
+const port = process.env.PORT;
 const app = express();
 connect();
 
