@@ -27,6 +27,7 @@ const serviceSchema = new Schema({
   },
   servStat: {
     type: String,
+    default: 'Solicitado'
   },
   bikeID: {
     type: Schema.Types.ObjectId, 

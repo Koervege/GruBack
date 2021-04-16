@@ -25,7 +25,6 @@ module.exports = {
         })
         .populate({
           path: 'serviceIDs',
-          select: '-_id',
         }); 
       res.status(200).json({ message: `${tows.length} Tows was found`, tows, userID: user });
     } catch(error) {
