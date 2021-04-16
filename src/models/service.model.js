@@ -3,7 +3,6 @@ const { model, Schema, models } = require('mongoose');
 const serviceSchema = new Schema({
   cost: {
     type: Number,
-    required: [true, 'El campo de costo es requerido'],
   },
   initLoc: {
     type: String,
@@ -28,6 +27,7 @@ const serviceSchema = new Schema({
   },
   servStat: {
     type: String,
+    default: 'Solicitado'
   },
   bikeID: {
     type: Schema.Types.ObjectId, 
