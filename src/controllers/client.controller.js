@@ -21,6 +21,7 @@ module.exports = {
           name: client.name,
           email: client.email,
           phoneNum: client.phoneNum,
+          emailIsConfirmed: client.emailIsConfirmed,
         },
       });
     } catch (error) {

@@ -45,6 +45,7 @@ module.exports = {
           email: validUser.email,
           phoneNum: validUser.phoneNum,
           photo: validUser.photo,
+          emailIsConfirmed: validUser.emailIsConfirmed,
         },
       });
       
@@ -76,6 +77,7 @@ module.exports = {
           email: loggedUser.email,
           phoneNum: loggedUser.phoneNum,
           photo: loggedUser.photo,
+          emailIsConfirmed: loggedUser.emailIsConfirmed,
         },
        })
     } catch(error) {
