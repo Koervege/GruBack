@@ -128,7 +128,7 @@ module.exports = {
   
       if(fullUser.emailToken == emailToken) {
         fullUser.emailIsConfirmed = true;
-        fullUser.save({ validateBeforeSave: false });
+        await fullUser.save({ validateBeforeSave: false });
       } else {
         throw new Error('Invalid Email Token');
       };
