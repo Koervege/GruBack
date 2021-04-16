@@ -59,9 +59,9 @@ module.exports = {
       let loggedUser;
 
       if(userType === 'client') {
-        loggedUser = await Client.findById(user);
+        loggedUser = await Client.findById(user).populate('bikeIDs');
       } else if(userType === 'supplier') {
-        loggedUser = await Supplier.findById(user);
+        loggedUser = await Supplier.findById(user).populate('towIDs');
       } else {
         throw new Error('invalid token')
       }
