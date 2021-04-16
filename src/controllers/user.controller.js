@@ -45,6 +45,7 @@ module.exports = {
           email: validUser.email,
           phoneNum: validUser.phoneNum,
           photo: validUser.photo,
+          emailIsConfirmed: validUser.emailIsConfirmed,
         },
       });
       
@@ -59,9 +60,9 @@ module.exports = {
       let loggedUser;
 
       if(userType === 'client') {
-        loggedUser = await Client.findById(user);
+        loggedUser = await Client.findById(user).populate('bikeIDs');
       } else if(userType === 'supplier') {
-        loggedUser = await Supplier.findById(user);
+        loggedUser = await Supplier.findById(user).populate('towIDs');
       } else {
         throw new Error('invalid token')
       }
@@ -76,6 +77,7 @@ module.exports = {
           email: loggedUser.email,
           phoneNum: loggedUser.phoneNum,
           photo: loggedUser.photo,
+          emailIsConfirmed: loggedUser.emailIsConfirmed,
         },
        })
     } catch(error) {
@@ -126,7 +128,7 @@ module.exports = {
   
       if(fullUser.emailToken == emailToken) {
         fullUser.emailIsConfirmed = true;
-        fullUser.save({ validateBeforeSave: false });
+        await fullUser.save({ validateBeforeSave: false });
       } else {
         throw new Error('Invalid Email Token');
       };

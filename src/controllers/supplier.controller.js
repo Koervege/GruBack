@@ -21,6 +21,7 @@ module.exports = {
           name: supplier.name,
           email: supplier.email,
           phoneNum: supplier.phoneNum,
+          emailIsConfirmed: supplier.emailIsConfirmed,
         },
       });
     } catch (error) {
