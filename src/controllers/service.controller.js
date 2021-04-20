@@ -72,7 +72,23 @@ module.exports = {
     try {
       const {body, params: {serviceID} } = req;
 
-      const service = await Service.findByIdAndUpdate(serviceID, body, {new: true});
+      const service = await Service.findByIdAndUpdate(serviceID, body, {new: true})
+        .populate({
+          path: 'bikeID',
+          select: '-serviceIDs',
+          populate: {
+            path: 'clientID',
+            select: '-password -bikeIDs',
+          },
+        })
+        .populate({
+          path: 'towID',
+          select: '-serviceIDs',
+          populate: {
+            path: 'supplierID',
+            select: '-password -towIDs',
+          },
+        });
       res.status(200).json({ message:'service updated', service });
     } catch (error) {
       res.status(400).json({ message:'services could not be updated', error });
