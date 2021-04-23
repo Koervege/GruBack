@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Client = require('../models/client.model');
+const Motorcycle = require('../models/motorcycle.model');
 
 module.exports = {
   async signup(req, res) {
@@ -60,6 +61,10 @@ module.exports = {
       const { user } = req;
 
       const clientDelete = await Client.findByIdAndDelete(user).select('-password');
+      if (clientDelete.bikeIDs.length > 0) {
+        bikeId = clientDelete.bikeIDs[0];
+        await Motorcycle.findByIdAndDelete(bikeId);
+      } 
       res.status(200).json({ message: 'client deleted', clientDelete });
     } catch (error) {
       res.status(400).json({ message: 'client could not be deleted', error });

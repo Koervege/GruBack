@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Supplier = require('../models/supplier.model');
+const Tow = require('../models/tow.model');
 
 module.exports = {
   async signup(req, res) {
@@ -58,6 +59,10 @@ module.exports = {
       const { user } = req;
       
       const supplierDelete = await Supplier.findByIdAndDelete(user).select('-password');
+      if (supplierDelete.towIDs.length > 0) {
+        towId = supplierDelete.towIDs[0];
+        await Tow.findByIdAndDelete(towId);
+      } 
       res.status(200).json({ message: 'supplier deleted', supplierDelete });
     } catch (error) {
       res.status(400).json({ message: 'supplier could not be deleted', error });
