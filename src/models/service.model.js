@@ -7,6 +7,9 @@ const serviceSchema = new Schema({
   epaycoRef: {
     type: Number
   },
+  epaycoResponse: {
+    type: String
+  },
   quotas:  {
     type: String  
   },
