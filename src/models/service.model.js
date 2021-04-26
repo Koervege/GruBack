@@ -1,6 +1,18 @@
 const { model, Schema, models } = require('mongoose');
 
 const serviceSchema = new Schema({
+  paymentDate: {
+    type: String
+  },
+  epaycoRef: {
+    type: Number
+  },
+  epaycoResponse: {
+    type: String
+  },
+  quotas:  {
+    type: String  
+  },
   cost: {
     type: Number,
   },
