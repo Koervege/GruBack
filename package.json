@@ -6,10 +6,6 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"
   },
-  "engines":{
-    "node": "15.10.0",
-    "yarn": "1.22.10"
-  },
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
