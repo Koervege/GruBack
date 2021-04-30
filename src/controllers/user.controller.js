@@ -100,9 +100,11 @@ module.exports = {
         throw new Error('invalid user id');
       };
 
-      const emailText = `Hola, ${fullUser.name}! \
-        Recibimos una petición para validar este correo en GruApp \
-        tu Token es ${emailToken}`;
+      const emailText = `<h1 style="text-align: center";>Bienvenido a GruApp!!</h1>
+        <p>Hola, ${fullUser.name},recibimos una petición para validar este correo
+          tu token es: </p>
+        <h2 style="text-align: center";>${emailToken}</h2>`;
+
 
       const emailStatus = mailer(email, 'Confirma tu Correo', emailText);
       if(emailStatus !== 'Success!') throw new Error(emailStatus);
