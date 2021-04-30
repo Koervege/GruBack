@@ -105,6 +105,7 @@ module.exports = {
           tu token es: </p>
         <h2 style="text-align: center";>${emailToken}</h2>`;
 
+
       const emailStatus = mailer(email, 'Confirma tu Correo', emailText);
       if(emailStatus !== 'Success!') throw new Error(emailStatus);
 
