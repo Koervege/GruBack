@@ -15,7 +15,7 @@ module.exports = {
       from: process.env.EMAIL,
       to: emailAddress,
       subject: subject,
-      text: emailText,
+      html: emailText,
     };
   
     let status = "Success!";
